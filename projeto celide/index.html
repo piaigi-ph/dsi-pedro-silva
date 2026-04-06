@@ -1,0 +1,791 @@
+Claro — aqui está o **código HTML completo** já com:
+
+* **fundo azul escuro**
+* **barra de pesquisa movida**
+* **perfil/ícones reposicionados**
+* **seguidores/avatares ajustados para o outro lado**
+
+```html
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <title>YouTube Layout</title>
+  <style>
+    /* =============================================
+       RESET & VARIÁVEIS
+       ============================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-primary:    rgb(9, 12, 22);
+      --bg-secondary:  #0f1b36;
+      --bg-hover:      #162544;
+      --bg-card:       #101c35;
+      --accent-red:    #ff0000;
+      --accent-fire:   #ff6600;
+      --text-primary:  #f1f1f1;
+      --text-secondary:#aaaaaa;
+      --border:        #223455;
+      --header-height: 56px;
+      --sidebar-width: 64px;
+      --radius-sm:     6px;
+      --radius-md:     10px;
+      --radius-full:   50%;
+      --shadow:        0 4px 20px rgba(0,0,0,0.5);
+      --transition:    0.18s ease;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Roboto', sans-serif;
+      font-size: 14px;
+      overflow-x: hidden;
+    }
+
+    /* =============================================
+       HEADER
+       ============================================= */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: var(--header-height);
+      background: var(--bg-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      gap: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-esquerda {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+
+    .menu-hamburguer {
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--text-primary);
+      width: 36px; height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      transition: background var(--transition);
+      user-select: none;
+    }
+    .menu-hamburguer:hover { background: var(--bg-hover); }
+
+    .logo { display: flex; align-items: center; }
+
+    .logo-text {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text .yt-icon {
+      background: var(--accent-red);
+      color: white;
+      width: 28px; height: 20px;
+      border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+    }
+
+    .logo-text span { color: var(--text-primary); }
+
+.header-centro {
+  flex: 1;
+  max-width: 540px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+    .header-centro input {
+      flex: 1;
+      height: 38px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-right: none;
+      border-radius: 20px 0 0 20px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      padding: 0 16px;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+
+    .header-centro input::placeholder { color: var(--text-secondary); }
+    .header-centro input:focus { border-color: #4a90e2; color: var(--text-primary); }
+
+    .header-centro button {
+      height: 38px; width: 56px;
+      background: var(--bg-hover);
+      border: 1px solid var(--border);
+      border-left: none;
+      border-radius: 0 20px 20px 0;
+      color: var(--text-primary);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background var(--transition);
+    }
+
+    .header-centro button:hover { background: #3a3a3a; }
+
+
+.header-direita {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+    .header-direita button {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 22px;
+      width: 38px; height: 38px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background var(--transition);
+    }
+
+    .header-direita button:hover { background: var(--bg-hover); }
+
+    /* =============================================
+       SIDEBAR
+       ============================================= */
+    .sidebar {
+      position: fixed;
+      top: var(--header-height);
+      left: 0; bottom: 0;
+      width: var(--sidebar-width);
+      background: var(--bg-primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 0;
+      gap: 4px;
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 90;
+    }
+
+    .sidebar::-webkit-scrollbar { width: 0; }
+
+    .sidebar > button {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 22px;
+      width: 44px; height: 44px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background var(--transition), color var(--transition);
+      flex-shrink: 0;
+    }
+
+    .sidebar > button:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .lista-seguindo {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 0;
+    }
+
+    .canal {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-full);
+      background: linear-gradient(135deg, #2a2a2a, #3a3a3a);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform var(--transition);
+    }
+
+    .canal:hover { transform: scale(1.1); }
+
+    /* =============================================
+       MAIN
+       ============================================= */
+    main {
+      margin-top: var(--header-height);
+      margin-left: var(--sidebar-width);
+      padding: 20px 20px 40px;
+      min-height: calc(100vh - var(--header-height));
+    }
+
+    .videos-seguindo > h2,
+    .videos-recomendacoes > h2,
+    footer p {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+    }
+
+    .section-icon {
+      font-size: 20px;
+      color: var(--accent-red);
+    }
+
+    .videos-seguindo {
+      margin-bottom: 8px;
+    }
+
+    .videos-seguindo > h2 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+.seguindo-topo {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -60px;
+  margin-bottom: 20px;
+}
+
+    .avatar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 0;
+      flex-wrap: nowrap;
+    }
+
+    .avatar-canal {
+      width: 42px; height: 42px;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: border-color var(--transition), transform var(--transition);
+      background: var(--bg-hover);
+    }
+
+    .avatar-canal:hover {
+      border-color: var(--accent-red);
+      transform: scale(1.08);
+    }
+
+    .avatar-canal.placeholder {
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .avatar-canal.placeholder.c1 { background: #c0392b; }
+    .avatar-canal.placeholder.c2 { background: #2980b9; }
+    .avatar-canal.placeholder.c3 { background: #27ae60; }
+    .avatar-canal.placeholder.c4 { background: #8e44ad; }
+
+    .btn-add {
+      width: 42px; height: 42px;
+      border-radius: var(--radius-full);
+      background: var(--bg-hover);
+      border: 2px dashed var(--border);
+      color: var(--text-secondary);
+      font-size: 20px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .btn-add:hover {
+      background: var(--bg-secondary);
+      border-color: var(--text-secondary);
+      color: var(--text-primary);
+    }
+
+    /* =============================================
+       CARROSSEL HORIZONTAL — seguindo
+       ============================================= */
+    .video-lista {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .video-lista::-webkit-scrollbar { height: 4px; }
+    .video-lista::-webkit-scrollbar-track { background: transparent; }
+    .video-lista::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .video {
+      flex-shrink: 0;
+      width: 260px;
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      cursor: pointer;
+      scroll-snap-align: start;
+      transition: transform var(--transition), box-shadow var(--transition);
+      position: relative;
+    }
+
+    .video:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .video .thumb {
+      width: 100%;
+      height: 148px;
+      object-fit: cover;
+      display: block;
+      background: var(--bg-hover);
+    }
+
+    .thumb-placeholder {
+      width: 100%;
+      height: 148px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: rgba(255,255,255,0.15);
+    }
+
+    .thumb-placeholder.t1 { background: linear-gradient(135deg, #1d3d73, #11284a); }
+    .thumb-placeholder.t2 { background: linear-gradient(135deg, #275a89, #16375d); }
+    .thumb-placeholder.t3 { background: linear-gradient(135deg, #2c3e73, #18284e); }
+    .thumb-placeholder.t4 { background: linear-gradient(135deg, #1b4872, #102a49); }
+    .thumb-placeholder.t5 { background: linear-gradient(135deg, #35507a, #1b2d4f); }
+
+    .duration-badge {
+      position: absolute;
+      top: 112px;
+      right: 8px;
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .video.featured {
+      width: 300px;
+    }
+
+    .video.featured .thumb-placeholder {
+      height: 170px;
+    }
+
+    .video.featured .duration-badge {
+      top: 134px;
+    }
+
+    .featured-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.0);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+      transition: background var(--transition);
+      pointer-events: none;
+    }
+
+    .video.featured:hover .featured-overlay {
+      background: rgba(0,0,0,0.15);
+    }
+
+    .featured-top {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .channel-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,0,0,0.75);
+      border-radius: 20px;
+      padding: 4px 10px 4px 4px;
+    }
+
+    .channel-badge span {
+      font-size: 11px;
+      color: white;
+      font-weight: 500;
+    }
+
+    .featured-bottom {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .watch-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-red);
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      pointer-events: all;
+      transition: background var(--transition);
+    }
+
+    .watch-btn:hover { background: #cc0000; }
+
+    .video-info {
+      padding: 10px 12px 12px;
+    }
+
+    .video-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.4;
+      margin-bottom: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .video-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .video-views {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 2px;
+    }
+
+    .fire-icon {
+      color: var(--accent-fire);
+      font-size: 13px;
+    }
+
+    .section-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 24px 0;
+    }
+
+    /* =============================================
+       RECOMENDAÇÕES
+       ============================================= */
+    .videos-recomendacoes .video-lista {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      overflow-x: visible;
+      padding-bottom: 0;
+    }
+
+    .videos-recomendacoes .video {
+      width: 100%;
+      flex-shrink: unset;
+    }
+
+    .videos-recomendacoes .thumb-placeholder {
+      height: 130px;
+    }
+
+    .videos-recomendacoes .duration-badge {
+      top: 94px;
+    }
+
+    /* =============================================
+       FOOTER
+       ============================================= */
+    footer {
+      margin-top: 4px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    footer .material-icons {
+      color: var(--accent-red);
+      font-size: 20px;
+    }
+
+    footer p {
+      margin-bottom: 0 !important;
+    }
+
+    /* =============================================
+       RESPONSIVIDADE
+       ============================================= */
+    @media (max-width: 1200px) {
+      .videos-recomendacoes .video-lista {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 960px) {
+      .videos-recomendacoes .video-lista {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 680px) {
+      .videos-recomendacoes .video-lista {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .video {
+        width: 220px;
+      }
+
+      .header-centro {
+        flex: 1;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+  <div class="header-esquerda">
+    <div class="menu-hamburguer">☰</div>
+    <div class="logo">
+      <div class="logo-text">
+        <div class="yt-icon">▶</div>
+        <span>YouTube</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-centro">
+    <input type="text" placeholder="Clique para pesquisar">
+    <button class="material-icons" aria-label="pesquisar">search</button>
+  </div>
+
+  <div class="header-direita">
+    <button class="material-icons" aria-label="notificações">notifications</button>
+    <button class="material-icons" aria-label="conta">account_circle</button>
+  </div>
+</header>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <button class="material-icons" aria-label="explorar">explore</button>
+    <button class="material-icons" aria-label="em alta">local_fire_department</button>
+    <button class="material-icons" aria-label="inscrições">play_circle_filled</button>
+    <button class="material-icons" aria-label="biblioteca">folder</button>
+    <button class="material-icons" aria-label="histórico">history</button>
+    <button class="material-icons" aria-label="assistir depois">watch_later</button>
+    <button class="material-icons" aria-label="mais">expand_more</button>
+
+    <div class="lista-seguindo">
+      <div class="canal placeholder c1">M</div>
+      <div class="canal placeholder c2">F</div>
+      <div class="canal placeholder c3">P</div>
+      <div class="canal placeholder c4">I</div>
+    </div>
+
+    <button class="material-icons" aria-label="mais canais">expand_more</button>
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- SEÇÃO SEGUINDO -->
+    <section class="videos-seguindo">
+      <h2>
+        <span><span class="material-icons section-icon">people</span> Seguindo</span>
+      </h2>
+
+      <div class="seguindo-topo">
+        <div class="avatar-row">
+          <div class="avatar-canal placeholder c1">M</div>
+          <div class="avatar-canal placeholder c2">F</div>
+          <div class="avatar-canal placeholder c3">P</div>
+          <div class="avatar-canal placeholder c4">I</div>
+          <button class="btn-add material-icons" aria-label="adicionar canal">add</button>
+        </div>
+      </div>
+
+      <div class="video-lista">
+
+        <div class="video">
+          <div class="thumb-placeholder t1">▶</div>
+          <div class="duration-badge">26 min atrás</div>
+          <div class="video-info">
+            <p class="video-title">TÍTULO DO VÍDEO!</p>
+            <p class="video-meta">Nome do canal</p>
+          </div>
+        </div>
+
+        <div class="video featured">
+          <div class="thumb-placeholder t2" style="height:170px;">▶</div>
+          <div class="featured-overlay">
+            <div class="featured-top">
+              <div class="channel-badge">
+                <div style="width:24px;height:24px;border-radius:50%;background:#1a6bb5;display:flex;align-items:center;justify-content:center;font-size:11px;color:white;font-weight:700;">M</div>
+                <span>Mr. Beast ✓<br><span style="color:#aaa;font-size:10px;">999 mil views</span></span>
+              </div>
+            </div>
+            <div class="featured-bottom">
+              <button class="watch-btn">Assistir ▶</button>
+            </div>
+          </div>
+          <div class="duration-badge" style="top:134px;">55 min atrás</div>
+          <div class="video-info">
+            <p class="video-title">TÍTULO DO VÍDEO!</p>
+            <p class="video-meta">Nome do canal</p>
+          </div>
+        </div>
+
+        <div class="video">
+          <div class="thumb-placeholder t3">▶</div>
+          <div class="duration-badge">14 min atrás</div>
+          <div class="video-info">
+            <p class="video-title">TÍTULO DO VÍDEO!</p>
+            <p class="video-meta">Nome do canal</p>
+          </div>
+        </div>
+
+        <div class="video">
+          <div class="thumb-placeholder t4">▶</div>
+          <div class="duration-badge">1 h atrás</div>
+          <div class="video-info">
+            <p class="video-title">TÍTULO DO VÍDEO!</p>
+            <p class="video-meta">Nome do canal</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- SEÇÃO RECOMENDAÇÕES -->
+    <section class="videos-recomendacoes">
+      <h2>
+        <span class="material-icons section-icon">home</span>
+        Recomendações
+      </h2>
+
+      <div class="video-lista">
+
+        <div class="video">
+          <div class="thumb-placeholder t1" style="height:130px;">▶</div>
+          <div class="duration-badge" style="top:94px;">1 mês atrás</div>
+          <div class="video-info">
+            <div class="video-views"><span class="material-icons fire-icon">local_fire_department</span> 5,5M views</div>
+            <p class="video-title">TÍTULO DO VÍDEO!</p>
+            <p class="video-meta">Nome do canal</p>
+          </div>
+        </div>
+
+        <div class="video">
+          <div class="thumb-placeholder t2" style="height:130px;">▶</div>
+          <div class="duration-badge" style="top:94px;">1 mês atrás</div>
+          <div class="video-info">
+            <div class="video-views"><span class="material-icons fire-icon">local_fire_department</span> 5,5M views</div>
+            <p class="video-title">TÍTULO DO VÍDEO!</p>
+            <p class="video-meta">Nome do canal</p>
+          </div>
+        </div>
+
+        <div class="video">
+          <div class="thumb-placeholder t3" style="height:130px;">▶</div>
+          <div class="duration-badge" style="top:94px;">1 mês atrás</div>
+          <div class="video-info">
+            <div class="video-views"><span class="material-icons fire-icon">local_fire_department</span> 5,5M views</div>
+            <p class="video-title">TÍTULO DO VÍDEO!</p>
+            <p class="video-meta">Nome do canal</p>
+          </div>
+        </div>
+
+        <div class="video">
+          <div class="thumb-placeholder t4" style="height:130px;">▶</div>
+          <div class="duration-badge" style="top:94px;">1 mês atrás</div>
+          <div class="video-info">
+            <div class="video-views"><span class="material-icons fire-icon">local_fire_department</span> 5,5M views</div>
+            <p class="video-title">TÍTULO DO VÍDEO!</p>
+            <p class="video-meta">Nome do canal</p>
+          </div>
+        </div>
+
+        <div class="video">
+          <div class="thumb-placeholder t5" style="height:130px;">▶</div>
+          <div class="duration-badge" style="top:94px;">1 mês atrás</div>
+          <div class="video-info">
+            <div class="video-views"><span class="material-icons fire-icon">local_fire_department</span> 5,5M views</div>
+            <p class="video-title">TÍTULO DO VÍDEO!</p>
+            <p class="video-meta">Nome do canal</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- FOOTER -->
+    <footer>
+      <span class="material-icons">schedule</span>
+      <p>Continuar assistindo</p>
+    </footer>
+
+  </main>
+
+</body>
+</html>
+```
+
+Se quiser, eu posso agora te mandar uma **versão mais parecida ainda com a imagem**, porque essa aqui já está ajustada, **mas ainda dá pra deixar bem mais fiel ao print**.
