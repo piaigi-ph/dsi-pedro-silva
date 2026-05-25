@@ -1,0 +1,218 @@
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f7f5; padding: 2rem 1.5rem; border-radius: 12px;">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <div style="margin-bottom: 2rem;">
+            <h1 style="font-size: 28px; font-weight: 500; color: #1a1a1a; margin-bottom: 0.5rem;">Calculadora de Salário</h1>
+            <p style="font-size: 14px; color: #666;">Calcule seu salário líquido com descontos e benefícios</p>
+        </div>
+
+        <div id="error" style="background: #fee; color: #c00; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; display: none; font-size: 14px; border: 1px solid #fcc;"></div>
+
+        <form id="salaryForm" style="background: white; padding: 1.5rem; border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 2rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+                <div style="display: flex; flex-direction: column;">
+                    <label style="font-size: 12px; font-weight: 600; color: #666; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;">Nome completo</label>
+                    <input type="text" id="nome" required placeholder="Seu nome" style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; color: #1a1a1a; background: #fff; transition: all 0.2s;">
+                </div>
+
+                <div style="display: flex; flex-direction: column;">
+                    <label style="font-size: 12px; font-weight: 600; color: #666; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;">Idade</label>
+                    <input type="number" id="idade" min="18" max="100" required placeholder="Ex: 35" style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; color: #1a1a1a; background: #fff;">
+                </div>
+
+                <div style="display: flex; flex-direction: column;">
+                    <label style="font-size: 12px; font-weight: 600; color: #666; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;">Tempo de serviço (anos)</label>
+                    <input type="number" id="tempoServico" min="0" max="60" required placeholder="Ex: 5" style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; color: #1a1a1a; background: #fff;">
+                </div>
+
+                <div style="display: flex; flex-direction: column;">
+                    <label style="font-size: 12px; font-weight: 600; color: #666; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;">Horas/dia</label>
+                    <input type="number" id="horasPorDia" min="0.5" step="0.5" required placeholder="Ex: 8" style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; color: #1a1a1a; background: #fff;">
+                </div>
+
+                <div style="display: flex; flex-direction: column;">
+                    <label style="font-size: 12px; font-weight: 600; color: #666; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;">Dias/mês</label>
+                    <input type="number" id="diasMes" min="1" max="31" required placeholder="Ex: 20" style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; color: #1a1a1a; background: #fff;">
+                </div>
+
+                <div style="display: flex; flex-direction: column;">
+                    <label style="font-size: 12px; font-weight: 600; color: #666; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;">Valor/hora (R$)</label>
+                    <input type="number" id="valorHora" min="0" step="0.01" required placeholder="Ex: 50.00" style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; color: #1a1a1a; background: #fff;">
+                </div>
+            </div>
+
+            <div style="background: #f5f5f5; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #e8e8e8;">
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                    <input type="checkbox" id="temFilhos" style="width: 20px; height: 20px; cursor: pointer;">
+                    <label for="temFilhos" style="margin: 0; font-size: 14px; cursor: pointer; color: #1a1a1a; font-weight: 500;">Você tem filhos?</label>
+                </div>
+
+                <div id="filhosInput" style="display: none; padding-top: 1rem; border-top: 1px solid #ddd;">
+                    <div style="display: flex; flex-direction: column; max-width: 200px;">
+                        <label style="font-size: 12px; font-weight: 600; color: #666; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;">Quantos filhos?</label>
+                        <input type="number" id="numFilhos" min="1" max="20" placeholder="Ex: 2" style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; color: #1a1a1a; background: #fff;">
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button type="submit" style="padding: 0.75rem 1.5rem; border: 1px solid #0066cc; background: #0066cc; border-radius: 6px; font-size: 14px; font-weight: 600; color: white; cursor: pointer; transition: all 0.2s;">
+                    Calcular Salário
+                </button>
+                <button type="reset" style="padding: 0.75rem 1.5rem; border: 1px solid #ddd; background: white; border-radius: 6px; font-size: 14px; font-weight: 600; color: #1a1a1a; cursor: pointer; transition: all 0.2s;">
+                    Limpar formulário
+                </button>
+            </div>
+        </form>
+
+        <div id="resultsContainer" style="display: none;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <div style="background: #f5f5f5; border-radius: 8px; padding: 1rem; text-align: center; border: 1px solid #e0e0e0;">
+                    <div style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; font-weight: 600;">Salário Bruto</div>
+                    <div id="salarioBrutoDisplay" style="font-size: 24px; font-weight: 600; color: #1a1a1a;">R$ 0,00</div>
+                </div>
+
+                <div style="background: #ffebee; border-radius: 8px; padding: 1rem; text-align: center; border: 1px solid #ffcdd2;">
+                    <div style="font-size: 12px; color: #c00; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; font-weight: 600;">Total Descontos</div>
+                    <div id="totalDescontosDisplay" style="font-size: 24px; font-weight: 600; color: #d32f2f;">R$ 0,00</div>
+                </div>
+
+                <div style="background: #f5f5f5; border-radius: 8px; padding: 1rem; text-align: center; border: 1px solid #e0e0e0;">
+                    <div style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; font-weight: 600;">Adicionais</div>
+                    <div id="adicionaisDisplay" style="font-size: 24px; font-weight: 600; color: #1a1a1a;">R$ 0,00</div>
+                </div>
+
+                <div style="background: #e8f5e9; border-radius: 8px; padding: 1rem; text-align: center; border: 1px solid #c8e6c9;">
+                    <div style="font-size: 12px; color: #2e7d32; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; font-weight: 600;">Salário Líquido</div>
+                    <div id="salarioLiquidoDisplay" style="font-size: 24px; font-weight: 600; color: #2e7d32;">R$ 0,00</div>
+                </div>
+            </div>
+
+            <div style="background: white; border: 1px solid #e0e0e0; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <h3 style="font-size: 16px; font-weight: 600; color: #1a1a1a; margin-bottom: 1rem;">Detalhamento dos Descontos</h3>
+                <div style="padding: 0.75rem 0; border-bottom: 1px solid #e0e0e0; font-size: 14px; display: flex; justify-content: space-between;">
+                    <span style="color: #666;">INSS (8,5%)</span>
+                    <span id="inssDisplay" style="color: #1a1a1a; font-weight: 600;">R$ 0,00</span>
+                </div>
+                <div style="padding: 0.75rem 0; font-size: 14px; display: flex; justify-content: space-between;">
+                    <span style="color: #666;">Imposto de Renda</span>
+                    <span id="impostoDisplay" style="color: #1a1a1a; font-weight: 600;">R$ 0,00</span>
+                </div>
+            </div>
+
+            <div style="background: white; border: 1px solid #e0e0e0; border-radius: 12px; padding: 1.5rem;">
+                <h3 style="font-size: 16px; font-weight: 600; color: #1a1a1a; margin-bottom: 1rem;">Detalhamento dos Benefícios</h3>
+                <div style="padding: 0.75rem 0; border-bottom: 1px solid #e0e0e0; font-size: 14px; display: flex; justify-content: space-between;">
+                    <span style="color: #666;">Adicional (idade/tempo serviço)</span>
+                    <span id="adicionalDetalhDisplay" style="color: #1a1a1a; font-weight: 600;">R$ 0,00</span>
+                </div>
+                <div id="bonificacaoRow" style="padding: 0.75rem 0; font-size: 14px; display: none; justify-content: space-between;">
+                    <span style="color: #666;">Bonificação por filhos</span>
+                    <span id="bonificacaoDisplay" style="color: #1a1a1a; font-weight: 600;">R$ 0,00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('salaryForm');
+        const temFilhosCheckbox = document.getElementById('temFilhos');
+        const filhosInput = document.getElementById('filhosInput');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const errorDiv = document.getElementById('error');
+
+        temFilhosCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                filhosInput.style.display = 'block';
+                document.getElementById('numFilhos').required = true;
+            } else {
+                filhosInput.style.display = 'none';
+                document.getElementById('numFilhos').required = false;
+                document.getElementById('numFilhos').value = '';
+            }
+        });
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            errorDiv.style.display = 'none';
+
+            try {
+                const nome = document.getElementById('nome').value;
+                const idade = parseFloat(document.getElementById('idade').value);
+                const tempoServico = parseFloat(document.getElementById('tempoServico').value);
+                const horasPorDia = parseFloat(document.getElementById('horasPorDia').value);
+                const diasMes = parseFloat(document.getElementById('diasMes').value);
+                const valorHora = parseFloat(document.getElementById('valorHora').value);
+
+                if (idade < 18 || idade > 100 || horasPorDia <= 0 || diasMes <= 0 || valorHora <= 0) {
+                    throw new Error('Verifique os valores inseridos. Todos devem ser positivos e dentro dos limites.');
+                }
+
+                const totalHoras = horasPorDia * diasMes;
+                const salarioBruto = totalHoras * valorHora;
+
+                const inss = salarioBruto * 0.085;
+                let impostoRenda = 0;
+                if (salarioBruto > 1500) {
+                    impostoRenda = salarioBruto * 0.15;
+                } else if (salarioBruto >= 500) {
+                    impostoRenda = salarioBruto * 0.08;
+                }
+
+                const totalDescontos = inss + impostoRenda;
+                let salarioLiquido = salarioBruto - totalDescontos;
+
+                let adicional = 0;
+                if (idade <= 40) {
+                    adicional = salarioBruto * 0.20;
+                } else if (tempoServico > 15) {
+                    adicional = salarioBruto * 0.35;
+                } else if (tempoServico > 5 && idade > 30) {
+                    adicional = salarioBruto * 0.15;
+                }
+
+                salarioLiquido += adicional;
+
+                let bonificacao = 0;
+                if (temFilhosCheckbox.checked) {
+                    const numFilhos = parseFloat(document.getElementById('numFilhos').value) || 0;
+                    bonificacao = numFilhos * 50;
+                    salarioLiquido += bonificacao;
+                }
+
+                formatarExibicao(salarioBruto, inss, impostoRenda, totalDescontos, adicional, bonificacao, salarioLiquido);
+
+                resultsContainer.style.display = 'block';
+
+            } catch (err) {
+                errorDiv.textContent = err.message;
+                errorDiv.style.display = 'block';
+                resultsContainer.style.display = 'none';
+            }
+        });
+
+        function formatarExibicao(salarioBruto, inss, impostoRenda, totalDescontos, adicional, bonificacao, salarioLiquido) {
+            const formatter = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            document.getElementById('salarioBrutoDisplay').textContent = formatter.format(salarioBruto);
+            document.getElementById('totalDescontosDisplay').textContent = formatter.format(totalDescontos);
+            document.getElementById('adicionaisDisplay').textContent = formatter.format(adicional + bonificacao);
+            document.getElementById('salarioLiquidoDisplay').textContent = formatter.format(salarioLiquido);
+
+            document.getElementById('inssDisplay').textContent = formatter.format(inss);
+            document.getElementById('impostoDisplay').textContent = formatter.format(impostoRenda);
+            document.getElementById('adicionalDetalhDisplay').textContent = formatter.format(adicional);
+
+            if (bonificacao > 0) {
+                document.getElementById('bonificacaoRow').style.display = 'flex';
+                document.getElementById('bonificacaoDisplay').textContent = formatter.format(bonificacao);
+            } else {
+                document.getElementById('bonificacaoRow').style.display = 'none';
+            }
+        }
+    </script>
+</div>

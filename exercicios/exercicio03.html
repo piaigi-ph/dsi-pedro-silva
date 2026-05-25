@@ -1,0 +1,500 @@
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+    background: var(--color-background-tertiary, #f5f5f0);
+    padding: 20px;
+}
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--color-text-primary, #000);
+    margin-bottom: 8px;
+}
+
+.header p {
+    font-size: 14px;
+    color: var(--color-text-secondary, #666);
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 680px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-card {
+    background: var(--color-background-primary, #fff);
+    border: 0.5px solid var(--color-border-tertiary, rgba(0,0,0,0.1));
+    border-radius: var(--border-radius-lg, 12px);
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-primary, #000);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    border: 0.5px solid var(--color-border-tertiary, rgba(0,0,0,0.1));
+    border-radius: var(--border-radius-md, 8px);
+    background: var(--color-background-primary, #fff);
+    color: var(--color-text-primary, #000);
+    transition: all 0.2s ease;
+}
+
+input[type="number"]:focus {
+    outline: none;
+    border-color: var(--color-border-primary, rgba(0,0,0,0.2));
+    background: var(--color-background-secondary, #f9f9f7);
+}
+
+.visualization {
+    background: var(--color-background-primary, #fff);
+    border: 0.5px solid var(--color-border-tertiary, rgba(0,0,0,0.1));
+    border-radius: var(--border-radius-lg, 12px);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+.button-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 1.5rem;
+}
+
+button {
+    flex: 1;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 500;
+    border: 0.5px solid var(--color-border-secondary, rgba(0,0,0,0.15));
+    border-radius: var(--border-radius-md, 8px);
+    background: transparent;
+    color: var(--color-text-primary, #000);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background: var(--color-background-secondary, #f3f3f0);
+    border-color: var(--color-border-secondary, rgba(0,0,0,0.2));
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+button.primary {
+    background: var(--color-background-info, #e6f1fb);
+    color: var(--color-text-info, #185fa5);
+    border-color: var(--color-border-info, #378add);
+}
+
+button.primary:hover {
+    background: #d4e8f8;
+}
+
+.result-card {
+    background: var(--color-background-secondary, #f9f9f7);
+    border: 0.5px solid var(--color-border-tertiary, rgba(0,0,0,0.1));
+    border-radius: var(--border-radius-lg, 12px);
+    padding: 1.5rem;
+    display: none;
+}
+
+.result-card.show {
+    display: block;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--color-text-primary, #000);
+    margin-bottom: 1rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 0.5px solid var(--color-border-tertiary, rgba(0,0,0,0.1));
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    font-size: 14px;
+}
+
+.result-label {
+    color: var(--color-text-secondary, #666);
+}
+
+.result-value {
+    font-weight: 500;
+    color: var(--color-text-primary, #000);
+}
+
+.classification-badge {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: var(--border-radius-md, 8px);
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.badge-valid {
+    background: var(--color-background-success, #eaf3de);
+    color: var(--color-text-success, #3b6d11);
+    border: 0.5px solid rgba(99, 153, 34, 0.3);
+}
+
+.badge-invalid {
+    background: var(--color-background-danger, #fcebeb);
+    color: var(--color-text-danger, #a32d2d);
+    border: 0.5px solid rgba(163, 45, 45, 0.3);
+}
+
+.badge-type {
+    background: var(--color-background-info, #e6f1fb);
+    color: var(--color-text-info, #185fa5);
+    border: 0.5px solid var(--color-border-info, #378add);
+}
+
+.error {
+    color: var(--color-text-danger, #a32d2d);
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}
+
+.error.show {
+    display: block;
+}
+
+.sides-display {
+    background: var(--color-background-secondary, #f9f9f7);
+    padding: 12px;
+    border-radius: var(--border-radius-md, 8px);
+    border: 0.5px solid var(--color-border-tertiary, rgba(0,0,0,0.1));
+    font-size: 14px;
+    margin-top: 1rem;
+    text-align: center;
+    color: var(--color-text-secondary, #666);
+}
+
+.side-value {
+    font-weight: 500;
+    color: var(--color-text-primary, #000);
+    display: inline-block;
+    min-width: 50px;
+}
+</style>
+
+<div class="container">
+    <div class="header">
+        <h1>Classificador de Triângulos</h1>
+        <p>Descubra o tipo e classe do seu triângulo</p>
+    </div>
+    
+    <div class="content-grid">
+        <div class="form-card">
+            <form id="triangleForm">
+                <div class="form-group">
+                    <label for="sideA">Lado A</label>
+                    <input type="number" id="sideA" placeholder="5.0" step="0.1" min="0" required>
+                    <div class="error" id="erroA">Valor deve ser maior que 0</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sideB">Lado B</label>
+                    <input type="number" id="sideB" placeholder="5.0" step="0.1" min="0" required>
+                    <div class="error" id="erroB">Valor deve ser maior que 0</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sideC">Lado C</label>
+                    <input type="number" id="sideC" placeholder="5.0" step="0.1" min="0" required>
+                    <div class="error" id="erroC">Valor deve ser maior que 0</div>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="primary">Classificar</button>
+                    <button type="reset">Limpar</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="visualization">
+            <canvas id="triangleCanvas"></canvas>
+        </div>
+    </div>
+    
+    <div class="result-card" id="resultCard">
+        <div class="result-title">Resultado da Análise</div>
+        
+        <div class="sides-display">
+            Lados em ordem: <span class="side-value" id="displaySideA">0</span> > <span class="side-value" id="displaySideB">0</span> > <span class="side-value" id="displaySideC">0</span>
+        </div>
+        
+        <div class="result-item" style="margin-top: 1rem;">
+            <span class="result-label">Validação:</span>
+            <span class="result-value" id="resultValidation">-</span>
+        </div>
+        
+        <div class="result-item">
+            <span class="result-label">Classificação:</span>
+        </div>
+        <div id="classificationContainer"></div>
+    </div>
+</div>
+
+<script>
+const form = document.getElementById('triangleForm');
+const resultCard = document.getElementById('resultCard');
+const canvas = document.getElementById('triangleCanvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = 240;
+canvas.height = 240;
+
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const a = parseFloat(document.getElementById('sideA').value);
+    const b = parseFloat(document.getElementById('sideB').value);
+    const c = parseFloat(document.getElementById('sideC').value);
+    
+    if (!validarFormulario(a, b, c)) {
+        return;
+    }
+    
+    const sorted = [a, b, c].sort((x, y) => y - x);
+    const [sideA, sideB, sideC] = sorted;
+    
+    document.getElementById('displaySideA').textContent = sideA.toFixed(2);
+    document.getElementById('displaySideB').textContent = sideB.toFixed(2);
+    document.getElementById('displaySideC').textContent = sideC.toFixed(2);
+    
+    const isValid = sideA < sideB + sideC;
+    const result = classificarTriangulo(sideA, sideB, sideC, isValid);
+    
+    exibirResultado(result);
+    desenharTriangulo(sideA, sideB, sideC, isValid);
+    resultCard.classList.add('show');
+});
+
+function validarFormulario(a, b, c) {
+    let valido = true;
+    
+    document.getElementById('erroA').classList.remove('show');
+    document.getElementById('erroB').classList.remove('show');
+    document.getElementById('erroC').classList.remove('show');
+    
+    if (a <= 0) {
+        document.getElementById('erroA').classList.add('show');
+        valido = false;
+    }
+    if (b <= 0) {
+        document.getElementById('erroB').classList.add('show');
+        valido = false;
+    }
+    if (c <= 0) {
+        document.getElementById('erroC').classList.add('show');
+        valido = false;
+    }
+    
+    return valido;
+}
+
+function classificarTriangulo(a, b, c, isValid) {
+    const result = {
+        isValid: isValid,
+        type: '',
+        classification: []
+    };
+    
+    if (!isValid) {
+        result.type = 'Inválido';
+        result.classification.push('Não formam um triângulo');
+        return result;
+    }
+    
+    const aSq = a * a;
+    const bSq = b * b;
+    const cSq = c * c;
+    const sum = bSq + cSq;
+    
+    const epsilon = 0.0001;
+    
+    if (Math.abs(aSq - sum) < epsilon) {
+        result.type = 'Retângulo';
+        result.classification.push('Triângulo Retângulo');
+    } else if (aSq > sum) {
+        result.type = 'Obtusângulo';
+        result.classification.push('Triângulo Obtusângulo');
+    } else {
+        result.type = 'Acutângulo';
+        result.classification.push('Triângulo Acutângulo');
+    }
+    
+    if (Math.abs(a - b) < epsilon && Math.abs(b - c) < epsilon) {
+        result.classification.push('Triângulo Equilátero');
+    } else if (Math.abs(a - b) < epsilon || Math.abs(a - c) < epsilon || Math.abs(b - c) < epsilon) {
+        result.classification.push('Triângulo Isósceles');
+    } else {
+        result.classification.push('Triângulo Escaleno');
+    }
+    
+    return result;
+}
+
+function exibirResultado(result) {
+    const container = document.getElementById('classificationContainer');
+    container.innerHTML = '';
+    
+    if (result.isValid) {
+        document.getElementById('resultValidation').innerHTML = '<span class="classification-badge badge-valid">✓ Triângulo válido</span>';
+    } else {
+        document.getElementById('resultValidation').innerHTML = '<span class="classification-badge badge-invalid">✗ Triângulo inválido</span>';
+    }
+    
+    result.classification.forEach(classification => {
+        const badge = document.createElement('div');
+        badge.className = 'classification-badge badge-type';
+        badge.textContent = classification;
+        container.appendChild(badge);
+    });
+}
+
+function desenharTriangulo(a, b, c, isValid) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    if (!isValid) {
+        ctx.fillStyle = 'var(--color-text-secondary, #999)';
+        ctx.font = '14px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Triângulo inválido', canvas.width / 2, canvas.height / 2);
+        return;
+    }
+    
+    const maxSide = Math.max(a, b, c);
+    const scale = 140 / maxSide;
+    const scaledA = a * scale;
+    const scaledB = b * scale;
+    const scaledC = c * scale;
+    
+    const angle = Math.acos((scaledB * scaledB + scaledC * scaledC - scaledA * scaledA) / (2 * scaledB * scaledC));
+    
+    const x1 = canvas.width / 2 - scaledB / 2;
+    const y1 = canvas.height / 2 + 40;
+    const x2 = x1 + scaledB;
+    const y2 = y1;
+    const x3 = x1 + scaledC * Math.cos(angle);
+    const y3 = y1 - scaledC * Math.sin(angle);
+    
+    ctx.fillStyle = 'var(--color-background-info, #e6f1fb)';
+    ctx.strokeStyle = 'var(--color-border-info, #378add)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x3, y3);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    
+    ctx.fillStyle = 'var(--color-text-info, #185fa5)';
+    ctx.font = 'bold 12px sans-serif';
+    ctx.textAlign = 'center';
+    
+    ctx.fillText(a.toFixed(1), (x2 + x3) / 2, (y2 + y3) / 2 + 15);
+    ctx.fillText(b.toFixed(1), (x1 + x2) / 2, y1 + 20);
+    ctx.fillText(c.toFixed(1), (x1 + x3) / 2 - 15, (y1 + y3) / 2);
+    
+    ctx.fillStyle = 'var(--color-background-info, #e6f1fb)';
+    ctx.strokeStyle = 'var(--color-border-info, #378add)';
+    ctx.lineWidth = 1;
+    
+    ctx.beginPath();
+    ctx.arc(x1, y1, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.arc(x2, y2, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.arc(x3, y3, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+}
+
+form.addEventListener('reset', function() {
+    resultCard.classList.remove('show');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
+</script>

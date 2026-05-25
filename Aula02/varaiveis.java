@@ -4,4 +4,3 @@ public class varaiveis {
       System.out.println(name);
     }
   }
-  

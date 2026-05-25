@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Bônus</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+            background: var(--color-background-tertiary, #f5f5f0);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 500;
+            color: var(--color-text-primary, #000);
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            color: var(--color-text-secondary, #666);
+        }
+        
+        .form-card {
+            background: var(--color-background-primary, #fff);
+            border: 0.5px solid var(--color-border-tertiary, rgba(0,0,0,0.1));
+            border-radius: var(--border-radius-lg, 12px);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-primary, #000);
+            margin-bottom: 8px;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 0.5px solid var(--color-border-tertiary, rgba(0,0,0,0.1));
+            border-radius: var(--border-radius-md, 8px);
+            background: var(--color-background-primary, #fff);
+            color: var(--color-text-primary, #000);
+            transition: all 0.2s ease;
+        }
+        
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--color-border-primary, rgba(0,0,0,0.2));
+            background: var(--color-background-secondary, #f9f9f7);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 2rem;
+        }
+        
+        button {
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            border: 0.5px solid var(--color-border-secondary, rgba(0,0,0,0.15));
+            border-radius: var(--border-radius-md, 8px);
+            background: transparent;
+            color: var(--color-text-primary, #000);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        button:hover {
+            background: var(--color-background-secondary, #f3f3f0);
+            border-color: var(--color-border-secondary, rgba(0,0,0,0.2));
+        }
+        
+        button:active {
+            transform: scale(0.98);
+        }
+        
+        button.primary {
+            background: var(--color-background-info, #e6f1fb);
+            color: var(--color-text-info, #185fa5);
+            border-color: var(--color-border-info, #378add);
+        }
+        
+        button.primary:hover {
+            background: var(--color-background-secondary, #f3f3f0);
+            border-color: var(--color-border-info, #378add);
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, var(--color-background-secondary, #f9f9f7) 0%, var(--color-background-primary, #fff) 100%);
+            border: 0.5px solid var(--color-border-tertiary, rgba(0,0,0,0.1));
+            border-radius: var(--border-radius-lg, 12px);
+            padding: 2rem;
+            display: none;
+        }
+        
+        .result-card.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .result-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--color-text-primary, #000);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 0.5px solid var(--color-border-tertiary, rgba(0,0,0,0.1));
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            font-size: 15px;
+        }
+        
+        .result-label {
+            color: var(--color-text-secondary, #666);
+        }
+        
+        .result-value {
+            font-weight: 500;
+            color: var(--color-text-primary, #000);
+        }
+        
+        .result-item.bonus {
+            padding: 16px 12px;
+            background: var(--color-background-info, #e6f1fb);
+            border-radius: var(--border-radius-md, 8px);
+            border: 0.5px solid var(--color-border-info, #378add);
+            margin: 1rem 0;
+        }
+        
+        .result-item.bonus .result-label {
+            color: var(--color-text-info, #185fa5);
+        }
+        
+        .result-item.bonus .result-value {
+            color: var(--color-text-info, #185fa5);
+            font-size: 18px;
+        }
+        
+        .result-item.final {
+            padding: 16px 12px;
+            background: var(--color-background-success, #eaf3de);
+            border-radius: var(--border-radius-md, 8px);
+            border: 0.5px solid var(--color-border-success, rgba(99,153,34,0.3));
+            margin-top: 1rem;
+        }
+        
+        .result-item.final .result-label {
+            color: var(--color-text-success, #3b6d11);
+        }
+        
+        .result-item.final .result-value {
+            color: var(--color-text-success, #3b6d11);
+            font-size: 20px;
+        }
+        
+        .error {
+            color: var(--color-text-danger, #a32d2d);
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+        
+        .error.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Calculadora de Bônus</h1>
+            <p>Calcule o bônus baseado no tempo de trabalho e sexo</p>
+        </div>
+        
+        <div class="form-card">
+            <form id="bonusForm">
+                <div class="form-group">
+                    <label for="nome">Nome do funcionário</label>
+                    <input type="text" id="nome" placeholder="João da Silva" required>
+                    <div class="error" id="erroNome">Por favor, digite um nome</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tempo">Tempo de trabalho (anos)</label>
+                    <input type="number" id="tempo" min="0" placeholder="15" required>
+                    <div class="error" id="erroTempo">O tempo deve ser um número válido</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sexo">Sexo</label>
+                    <select id="sexo" required>
+                        <option value="">Selecione uma opção</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Feminino</option>
+                    </select>
+                    <div class="error" id="erroSexo">Por favor, selecione uma opção</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="salario">Salário bruto (R$)</label>
+                    <input type="number" id="salario" min="0" step="0.01" placeholder="2500.00" required>
+                    <div class="error" id="erroSalario">O salário deve ser um número válido</div>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="primary">Calcular</button>
+                    <button type="reset">Limpar</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="result-card" id="resultCard">
+            <div class="result-title">Resultado do Cálculo</div>
+            
+            <div class="result-item">
+                <span class="result-label">Funcionário</span>
+                <span class="result-value" id="resultNome">-</span>
+            </div>
+            
+            <div class="result-item">
+                <span class="result-label">Salário bruto</span>
+                <span class="result-value" id="resultSalario">R$ 0,00</span>
+            </div>
+            
+            <div class="result-item bonus">
+                <span class="result-label">Bônus</span>
+                <span class="result-value" id="resultBonus">R$ 0,00</span>
+            </div>
+            
+            <div class="result-item final">
+                <span class="result-label">Salário final</span>
+                <span class="result-value" id="resultFinal">R$ 0,00</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const form = document.getElementById('bonusForm');
+        const resultCard = document.getElementById('resultCard');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nome = document.getElementById('nome').value.trim();
+            const tempo = parseInt(document.getElementById('tempo').value);
+            const sexo = document.getElementById('sexo').value;
+            const salario = parseFloat(document.getElementById('salario').value);
+            
+            if (!validarFormulario(nome, tempo, sexo, salario)) {
+                return;
+            }
+            
+            const bonus = calcularBonus(sexo, tempo, salario);
+            const salarioFinal = salario + bonus;
+            
+            document.getElementById('resultNome').textContent = nome;
+            document.getElementById('resultSalario').textContent = 'R$ ' + salario.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('resultBonus').textContent = 'R$ ' + bonus.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('resultFinal').textContent = 'R$ ' + salarioFinal.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            
+            resultCard.classList.add('show');
+        });
+        
+        function validarFormulario(nome, tempo, sexo, salario) {
+            let valido = true;
+            
+            document.getElementById('erroNome').classList.remove('show');
+            document.getElementById('erroTempo').classList.remove('show');
+            document.getElementById('erroSexo').classList.remove('show');
+            document.getElementById('erroSalario').classList.remove('show');
+            
+            if (!nome) {
+                document.getElementById('erroNome').classList.add('show');
+                valido = false;
+            }
+            
+            if (isNaN(tempo) || tempo < 0) {
+                document.getElementById('erroTempo').classList.add('show');
+                valido = false;
+            }
+            
+            if (!sexo) {
+                document.getElementById('erroSexo').classList.add('show');
+                valido = false;
+            }
+            
+            if (isNaN(salario) || salario < 0) {
+                document.getElementById('erroSalario').classList.add('show');
+                valido = false;
+            }
+            
+            return valido;
+        }
+        
+        function calcularBonus(sexo, tempo, salario) {
+            if (sexo === 'M') {
+                if (tempo >= 15) {
+                    return salario * 0.20;
+                } else if (tempo >= 10) {
+                    return salario * 0.25;
+                }
+            } else if (sexo === 'F') {
+                if (tempo >= 20) {
+                    return salario * 0.25;
+                } else if (tempo >= 15) {
+                    return salario * 0.20;
+                }
+            }
+            return 100;
+        }
+        
+        form.addEventListener('reset', function() {
+            resultCard.classList.remove('show');
+        });
+    </script>
+</body>
+</html>
