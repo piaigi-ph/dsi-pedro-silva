@@ -31,3 +31,25 @@ aulas de desenvolvimento de software I com o professor João Siles
 # O que e java e como ele funciona?
 
 java e uma linguagem de programação "antiga", com diferentes funções principalmente para o **backend**, dando uma "funcionalidade" para o site ou pagina que você esta fazendo, e possivel utilizalo em diferentes plataformas, como por exemplo **vscode**, permitindo você juntar com outras linguagens de programação. ele funciona primeiramente em "linguagem humana", sendo primeiramente nos codando o codigo, apos isso ele tgraduz para o *bytecode* (linguagem intermediaria do usuario e maquina), após isso o JMA traduz o *bytecode* para a linguagem da maquina, sendo ela expecifica para o tipo do seu computador (windows,linux, apple e etc). 
+
+# Tutorial: Como criar um projeto Spring Boot
+
+## 1. O que é Spring Boot?
+
+O **Spring Boot** é uma ferramenta baseada no Spring Framework que facilita a criação de aplicações Java, principalmente APIs e aplicações web.
+
+Com o Spring Boot, conseguimos criar projetos rapidamente sem precisar configurar manualmente várias dependências.
+
+---
+
+## 2. Pré-requisitos
+
+Antes de começar, é necessário ter instalado:
+
+- Java JDK 17 ou superior
+- IntelliJ IDEA, Eclipse ou VS Code
+- Maven (opcional, pois o projeto pode utilizar o Maven Wrapper)
+
+Para verificar se o Java está instalado, abra o terminal e execute:
+
+```bash
